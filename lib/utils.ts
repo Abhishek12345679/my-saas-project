@@ -1,24 +1,24 @@
-import { type ClassValue, clsx } from "clsx"
-import { twMerge } from "tailwind-merge"
+import { clsx, type ClassValue } from "clsx";
 import ms from "ms";
+import { twMerge } from "tailwind-merge";
 
-import { env } from "@/env.mjs"
+import { env } from "@/env.mjs";
 
 export function cn(...inputs: ClassValue[]) {
-  return twMerge(clsx(inputs))
+  return twMerge(clsx(inputs));
 }
 
 export function formatDate(input: string | number): string {
-  const date = new Date(input)
+  const date = new Date(input);
   return date.toLocaleDateString("en-US", {
     month: "long",
     day: "numeric",
     year: "numeric",
-  })
+  });
 }
 
 export function absoluteUrl(path: string) {
-  return `${env.NEXT_PUBLIC_APP_URL}${path}`
+  return `${env.NEXT_PUBLIC_APP_URL}${path}`;
 }
 
 // Utils from precedent.dev
@@ -29,6 +29,7 @@ export const timeAgo = (timestamp: Date, timeOnly?: boolean): string => {
   }`;
 };
 
+// biome-ignore lint/suspicious/noExplicitAny: <explanation>
 export async function fetcher<JSON = any>(
   input: RequestInfo,
   init?: RequestInit,
@@ -43,9 +44,8 @@ export async function fetcher<JSON = any>(
       };
       error.status = res.status;
       throw error;
-    } else {
-      throw new Error("An unexpected error occurred");
     }
+    throw new Error("An unexpected error occurred");
   }
 
   return res.json();
@@ -63,10 +63,10 @@ export function nFormatter(num: number, digits?: number) {
     { value: 1e18, symbol: "E" },
   ];
   const rx = /\.0+$|(\.[0-9]*[1-9])0+$/;
-  var item = lookup
+  const item = lookup
     .slice()
     .reverse()
-    .find(function (item) {
+    .find((item) => {
       return num >= item.value;
     });
   return item
